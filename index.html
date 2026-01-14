@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Заявка на квартиру</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
+    input, button { width: 100%; padding: 12px; margin: 8px 0; box-sizing: border-box; }
+    button { background: #0088cc; color: white; border: none; border-radius: 6px; font-size: 16px; }
+  </style>
+</head>
+<body>
+  <h2>Подборка квартир</h2>
+  <input type="text" id="name" placeholder="Ваше имя">
+  <input type="tel" id="phone" placeholder="Телефон">
+  <input type="text" id="budget" placeholder="Бюджет">
+
+  <button onclick="sendData()">Отправить заявку</button>
+
+  <script>
+    function sendData() {
+      const name = document.getElementById('name').value;
+      const phone = document.getElementById('phone').value;
+      const budget = document.getElementById('budget').value;
+
+      if (!name || !phone) {
+        alert('Заполните имя и телефон');
+        return;
+      }
+
+      // Собираем данные
+      const message = `Новая заявка:\nИмя: ${name}\nТелефон: ${phone}\nБюджет: ${budget}`;
+
+      // Отправляем в Telegram через бота (замените YOUR_BOT_TOKEN и YOUR_CHAT_ID)
+      const botToken = '8586234781:AAE87Am-arpkyk4tMcN44SYqSMJ8XDYrJKo';
+      const chatId = '896319728';
+      const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}&parse_mode=HTML`;
+
+      fetch(url)
+        .then(() => {
+          Telegram.WebApp.showAlert('Спасибо! Мы свяжемся с вами.');
+          setTimeout(() => Telegram.WebApp.close(), 2000);
+        })
+        .catch(() => {
+          Telegram.WebApp.showAlert('Ошибка. Попробуйте позже.');
+        });
+    }
+  </script>
+</body>
+</html>
